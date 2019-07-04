@@ -44,10 +44,6 @@ public class TabFragment1 extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<ContactRecyclerItem> mMyData;
     private View view;
-    URL url = new URL("http://192.168.25.16:3000/users");
-
-    public TabFragment1() throws MalformedURLException {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,24 +62,26 @@ public class TabFragment1 extends Fragment {
         mAdapter = new RecyclerImageTextAdapter(mMyData);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        //스크롤바 추가부분
         FastScroller fastScroller = (FastScroller) view.findViewById(R.id.fastscroll);
         fastScroller.setRecyclerView(mRecyclerView);
 
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
-//                startActivity(intent);
+            public void onClick(View view) { //연락처 추가 버튼
+                Intent intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
+                startActivity(intent);
             }
         });
     }
 
 
     public void initDataset() {
-        mMyData = getContactList();
+        mMyData = getContactList(); //폰에 저장된 연락처 리스트를 가져오는 함수(mMyData는 ArrayList<ContactRecyclerItem> type)
         ContactRecyclerItem contactItem;
 
+        //연락처 icon을 drawable type으로 변환하는 부분. getContactList에서 진행해도 무관한 부분이다.
         for (int i=0; i<mMyData.size(); i++){
             contactItem = mMyData.get(i);
             Drawable drawable;
@@ -109,6 +107,7 @@ public class TabFragment1 extends Fragment {
         Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, sortOrder);
         ArrayList<ContactRecyclerItem> contactItems = new ArrayList<>();
         if(cursor.moveToFirst()){
+            //저장된 연락처를 하나씩 가져와 각 정보들을 ContactRecyclerItem type으로 변환, contactItems에 추가한다.
             do{
                 long photo_id = cursor.getLong(2);
                 long person_id = cursor.getLong(3);
@@ -124,6 +123,7 @@ public class TabFragment1 extends Fragment {
         return contactItems;
     }
 
+    //연락처 사진 load시에 사용.
     public Bitmap loadContactPhoto(ContentResolver cr, long id, long photo_id){
         Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id);
         InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(cr, uri);
@@ -148,6 +148,7 @@ public class TabFragment1 extends Fragment {
         return null;
     }
 
+    //loadContactPhoto에서 사용.
     public Bitmap resizingBitmap(Bitmap oBitmap){
         if(oBitmap==null)
             return null;
@@ -171,6 +172,7 @@ public class TabFragment1 extends Fragment {
         return rBitmap;
     }
 
+    //ArrayList type을 JSONObject type으로 변환하는 함수.
     public JSONObject ArrListToJObj(ArrayList<ContactRecyclerItem> arrList, String name){
         JSONObject obj = new JSONObject();
         try{
