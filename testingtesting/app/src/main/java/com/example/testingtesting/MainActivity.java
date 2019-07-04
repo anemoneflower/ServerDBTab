@@ -56,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... urls) {
             try {
                 //JSONObject를 만들고 key value 형식으로 값을 저장해준다.
-//                JSONObject jsonObject = new JSONObject();
-//                jsonObject.accumulate("todoid", 13);
-//                jsonObject.accumulate("content", "yun");
-//                jsonObject.accumulate("completed", "false");
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.accumulate("todoid", 20);
+                jsonObject.accumulate("content", "yun");
+                jsonObject.accumulate("completed", "false");
 
                 HttpURLConnection con = null;
                 BufferedReader reader = null;
@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             return null;
         }
 
@@ -132,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 //JSONObject를 만들고 key value 형식으로 값을 저장해준다.
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.accumulate("todoid", 11);
+                jsonObject.accumulate("todoid", 25);
                 jsonObject.accumulate("content", "yun");
                 jsonObject.accumulate("completed", "false");
 
