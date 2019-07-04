@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                new JSONTask().execute("http://143.248.38.76:4500/post");//AsyncTask 시작시킴
+                new JSONTask().execute("http://143.248.38.76:4500/todos");//AsyncTask 시작시킴
             }
         });
 
@@ -49,8 +49,9 @@ public class MainActivity extends AppCompatActivity {
             try {
                 //JSONObject를 만들고 key value 형식으로 값을 저장해준다.
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.accumulate("user_id", "androidTest");
-                jsonObject.accumulate("name", "yun");
+                jsonObject.accumulate("todoid", 11);
+                jsonObject.accumulate("content", "yun");
+                jsonObject.accumulate("completed", "false");
 
                 HttpURLConnection con = null;
                 BufferedReader reader = null;
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            tvData.setText(result);//서버로 부터 받은 값을 출력해주는 부
+            tvData.setText(result);//서버로 부터 받은 값을 출력해주는 부분
         }
     }
 }
