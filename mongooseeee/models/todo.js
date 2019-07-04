@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 
 // Define Schemes
 const todoSchema = new mongoose.Schema({
-  todoid: { type: Number, required: true, unique: true },
-  content: { type: String, required: true },
-  completed: { type: String, default: false }
+  name: { type: Number, required: true},
+  phonenumber: { type: String, required: true, unique: true  },
+  iconID: { type: String, default: false },
+  pID: {type: Number}
 },
 {
   timestamps: true
@@ -24,17 +25,17 @@ todoSchema.statics.findAll = function () {
   return this.find({});
 };
 // Find One by todoid
-todoSchema.statics.findOneByTodoid = function (todoid) {
-  return this.findOne({ todoid });
+todoSchema.statics.findOneByPhonenumber = function (phonenumber) {
+  return this.findOne({ phonenumber });
 };
 // Update by todoid
-todoSchema.statics.updateByTodoid = function (todoid, payload) {
+todoSchema.statics.updateByPhonenumber = function (phonenumber, payload) {
   // { new: true }: return the modified document rather than the original. defaults to false
-  return this.findOneAndUpdate({ todoid }, payload, { new: true });
+  return this.findOneAndUpdate({ phonenumber }, payload, { new: true });
 };
 // Delete by todoid
-todoSchema.statics.deleteByTodoid = function (todoid) {
-  return this.remove({ todoid });
+todoSchema.statics.deleteByPhonenumber = function (phonenumber) {
+  return this.remove({ phonenumber });
 };
 // const Todo = mongoose.model('Todo', todoSchema);
 // Todo.find({})
