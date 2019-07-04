@@ -1,5 +1,6 @@
 package com.example.tabbed_activity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
@@ -21,4 +22,12 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
     }
+
+//    AsyncTask.execute(new Runnable() {
+//        @Override
+//        public void run() {
+//            // All your networking logic
+//            // should be here
+//        }
+//    });
 }

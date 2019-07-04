@@ -23,11 +23,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.futuremind.recyclerviewfastscroll.FastScroller;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class TabFragment1 extends Fragment {
@@ -36,6 +44,11 @@ public class TabFragment1 extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<ContactRecyclerItem> mMyData;
     private View view;
+    URL url = new URL("http://192.168.25.16:3000/users");
+
+    public TabFragment1() throws MalformedURLException {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_1, container, false);
@@ -60,11 +73,12 @@ public class TabFragment1 extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
-                startActivity(intent);
+//                Intent intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
+//                startActivity(intent);
             }
         });
     }
+
 
     public void initDataset() {
         mMyData = getContactList();
