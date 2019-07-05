@@ -34,6 +34,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -42,6 +43,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class TabFragment1 extends Fragment {
@@ -185,8 +187,22 @@ public class TabFragment1 extends Fragment {
             try {
                 //JSONObject를 만들고 key value 형식으로 값을 저장해준다.
 
+
+                ContactRecyclerItem contactItem;
+                for (int i = 0; i < mMyData.size(); i++) {
+                    contactItem = mMyData.get(i);
+                    Bitmap bm = loadContactPhoto(getActivity().getContentResolver(), contactItem.getPersonID(), contactItem.getIconID());
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
+                    bm.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
+                    byte[] byteArray = stream.toByteArray() ;
+                    String s = new String(byteArray, StandardCharsets.US_ASCII);
+                    contactItem.setImageStr(s);
+                    }
+
+
                 JSONArray jsonArray;// = new JSONArray();
                 JSONObject jsonOb = ArrListToJObj(mMyData, "test");
+
 //                JSONObject jsonObject = new JSONObject();
 //                jsonObject.accumulate("todoid", 14);
 //                jsonObject.accumulate("content", "yun");

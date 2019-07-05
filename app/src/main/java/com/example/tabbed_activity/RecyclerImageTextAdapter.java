@@ -3,6 +3,11 @@ package com.example.tabbed_activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +16,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class RecyclerImageTextAdapter extends RecyclerView
         .Adapter<RecyclerImageTextAdapter.ViewHolder> implements SectionTitleProvider {
     private ArrayList<ContactRecyclerItem> mData = null ;
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView icon ;
@@ -63,10 +71,22 @@ public class RecyclerImageTextAdapter extends RecyclerView
     public void onBindViewHolder(ViewHolder holder,final int position) {
 
         final ContactRecyclerItem item = mData.get(position) ;
+        String str= item.getImageStr();
+        byte[] b = str.getBytes(StandardCharsets.UTF_8);
+        Bitmap bitmap = BitmapFactory.decodeByteArray( b, 0, b.length ) ;
+//        Drawable drawable;
+//        if (bitmap == null)
+//            drawable = getResources().getDrawable(R.drawable.default_icon);
+//        else {
+//
+//        drawable = new BitmapDrawable(getActivity().getResources(), bitmap);
+//        }
 
-        holder.icon.setImageDrawable(item.getIcon()) ;
+
+        holder.icon.setImageBitmap(bitmap); ;
         holder.name.setText(item.getName()) ;
         holder.phone.setText(item.getPhone()) ;
+
 
         holder.mView.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -99,6 +119,10 @@ public class RecyclerImageTextAdapter extends RecyclerView
         });
 
     }
+
+//    private Resources getResources() {
+//        return null;
+//    }
 
     // getItemCount() - 전체 데이터 갯수 리턴.
     @Override
