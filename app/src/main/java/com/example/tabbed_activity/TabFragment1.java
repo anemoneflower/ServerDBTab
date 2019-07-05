@@ -45,6 +45,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TabFragment1 extends Fragment {
     private RecyclerView mRecyclerView;
@@ -52,6 +53,7 @@ public class TabFragment1 extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<ContactRecyclerItem> mMyData;
     private View view;
+    private String str;
     TextView tvData;
 
     @Override
@@ -281,7 +283,31 @@ public class TabFragment1 extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             tvData.setText(result);//서버로 부터 받은 값을 출력해주는 부분
+            str=result;
         }
+    }
+    public void hohoho() throws JSONException {
+        JSONArray mArray=new JSONArray();
+        try {
+                mArray = new JSONArray(str);
+        } catch(JSONException e) {
+                e.printStackTrace();
+        }
+//        JSONObject obj;
+//        for (int i = 0; i < mArray.length(); i ++){
+//            obj = mArray.getJSONObject(i);
+//        }
+        ArrayList<ContactRecyclerItem> listdata = new ArrayList<ContactRecyclerItem>();
+        for (int i=0; i<mArray.length(); i++){
+            ContactRecyclerItem ct = new ContactRecyclerItem();
+            ct.setName(mArray.getJSONObject(i).get("name").toString());
+            ct.setPhone(mArray.getJSONObject(i).get("phonenumber").toString());
+            ct.setIconID(Long.valueOf(mArray.getJSONObject(i).get("iconID").toString()));
+            ct.setPersonID(Long.valueOf(mArray.getJSONObject(i).get("pID").toString()));
+            ct.setImageStr(mArray.getJSONObject(i).get("imageStr").toString());
+            listdata.add(ct);
+        }
+        mMyData=listdata;
     }
 
     public void initDataset() {
@@ -421,7 +447,7 @@ public class TabFragment1 extends Fragment {
                 sObj.put("phonenumber", contactItem.getPhone());
                 sObj.put("iconID", contactItem.getPhone());
                 sObj.put("pID", contactItem.getPersonID());
-//                sObj.put("iconDrawable", contactItem.getIcon());
+                sObj.put("imgageStr", contactItem.getImageStr());
                 jArray.put(sObj);
             }
             obj.put("filename", name);
