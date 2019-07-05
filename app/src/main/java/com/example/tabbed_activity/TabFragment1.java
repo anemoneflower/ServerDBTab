@@ -83,7 +83,7 @@ public class TabFragment1 extends Fragment {
 
             @Override
             public void onClick(View view) {
-                new JSONTask().execute("http://143.248.38.76:4500/contacts");//AsyncTask 시작시킴
+                new JSONTask().execute("http://143.248.38.76:4500/contacts/initialize");//AsyncTask 시작시킴
             }
         });
 

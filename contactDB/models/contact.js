@@ -57,16 +57,16 @@ contactSchema.statics.deleteByPhonenumber = function(phonenumber) {
   });
 };
 
-contactSchema.statics.resetAll = function() {
-  var all = this.find({});
-  console.log(typeof(all));
-  for (int i = 0; i < sizeof(all); i++) {
-    // all.forEach(function(element){
-    contactSchema.statics.deleteByPhonenumber(element.phonenumber);
-    // });
-  }
-  return true;
-};
+// contactSchema.statics.resetAll = function() {
+//   var all = this.find({});
+//   console.log(typeof(all));
+//   for (int i = 0; i < sizeof(all); i++) {
+//     // all.forEach(function(element){
+//     contactSchema.statics.deleteByPhonenumber(element.phonenumber);
+//     // });
+//   }
+//   return true;
+// };
 
 
 module.exports = mongoose.model('Contact', contactSchema);

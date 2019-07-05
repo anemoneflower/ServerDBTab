@@ -32,11 +32,11 @@ router.post('/initialize', (req, res) => {
   console.log('who get in here : post - initialize');
   var jsonarr = req.body;
   var sendarr = [];
-  jsonarr.forEach(function(element){
+  jsonarr.some(function(element){//forEach(function(element) {
     // console.log("-------------------foreach inside");
     Contact.create(element)
-      .then(contact => sendarr.push(contact))//.res.send(contact))
-      .catch(err => res.status(500).send(err));
+      .then(contact => sendarr.push(contact)) //.res.send(contact))
+      .catch(err => {res.status(500).send(err); return true;});
   });
   res.send(sendarr);
 });
@@ -67,16 +67,37 @@ router.delete('/phonenumber/:phonenumber', (req, res) => {
     .catch(err => res.status(500).send(err));
 });
 
-// Reset All
 router.delete('/reset', (req, res) => {
   console.log('who get in here : reset');
-  Contact.resetAll()
-    .then((result) => {
-      if (result != true) return res.status(404).send({
-        err: 'ResetError'
+  Contact.findAll()
+    .then((contacts) => {
+      console.log('findall.....');
+      var phonenums = contacts.filter(function(item){return item.phonenumber != null;});
+      console.log('phonenums succedd!!!');
+      phonenums.forEach(function(element){
+        Contact.deleteByPhonenumber(element.phonenumber)
+          .then(()=>res.sendStatus(200))
+          .catch(err=>res.status(500).send(err));
       });
-      res.send(`Reset Successfully!`);
-    })
-    .catch(err => res.status(500).send(err));
+    });
+    //   if (!contacts.length) return res.status(404).send({
+    //     err: 'Contact not found'
+    //   });
+    //   res.send(`find successfully: ${contacts}`);
+    // })
+    // .catch(err => res.status(500).send(err));
 });
+
+// // Reset All
+// router.delete('/reset', (req, res) => {
+//   console.log('who get in here : reset');
+//   Contact.resetAll()
+//     .then((result) => {
+//       if (result != true) return res.status(404).send({
+//         err: 'ResetError'
+//       });
+//       res.send(`Reset Successfully!`);
+//     })
+//     .catch(err => res.status(500).send(err));
+// });
 module.exports = router;
