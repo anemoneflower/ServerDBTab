@@ -1,11 +1,13 @@
 package com.example.tabbed_activity;
 
-import android.os.AsyncTask;
+
 import android.os.Bundle;
+
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tabbed_activity.ui.main.SectionsPagerAdapter;
+
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -13,8 +15,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initial_set();
+//        getHashKey();
     }
-    protected void initial_set(){
+
+//    private void getHashKey() {
+//        try {
+//            PackageInfo info = getPackageManager().getPackageInfo(this.getPackageName(), PackageManager.GET_SIGNATURES);
+//            for (Signature signature : info.signatures) {
+//                MessageDigest md = MessageDigest.getInstance("SHA");
+//                md.update(signature.toByteArray());
+//                Log.d("TAG", "key_hash=" + Base64.encodeToString(md.digest(), Base64.DEFAULT));
+//            }
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    protected void initial_set() {
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -22,12 +41,4 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
     }
-
-//    AsyncTask.execute(new Runnable() {
-//        @Override
-//        public void run() {
-//            // All your networking logic
-//            // should be here
-//        }
-//    });
 }

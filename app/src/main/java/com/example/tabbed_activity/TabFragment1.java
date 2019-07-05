@@ -53,6 +53,7 @@ public class TabFragment1 extends Fragment {
     private ArrayList<ContactRecyclerItem> mMyData;
     private View view;
     TextView tvData;
+    private String getresult;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -110,12 +111,6 @@ public class TabFragment1 extends Fragment {
         @Override
         protected String doInBackground(String... urls) {
             try {
-
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.accumulate("todoid", 21);
-                jsonObject.accumulate("content", "yun");
-                jsonObject.accumulate("completed", "false");
-
                 HttpURLConnection con = null;
                 BufferedReader reader = null;
 
@@ -176,9 +171,11 @@ public class TabFragment1 extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             tvData.setText(result);
+            getresult = result;
         }
 
     }
+
 
     public class JSONTask extends AsyncTask<String, String, String> {
 

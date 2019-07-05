@@ -83,7 +83,7 @@ public class RecyclerImageTextAdapter extends RecyclerView
 //        }
 
 
-        holder.icon.setImageBitmap(bitmap); ;
+        holder.icon.setImageBitmap(bitmap);
         holder.name.setText(item.getName()) ;
         holder.phone.setText(item.getPhone()) ;
 
