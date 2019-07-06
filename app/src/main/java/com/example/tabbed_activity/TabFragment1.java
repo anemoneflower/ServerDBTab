@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -34,6 +35,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -42,6 +44,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class TabFragment1 extends Fragment {
@@ -51,6 +54,7 @@ public class TabFragment1 extends Fragment {
     private ArrayList<ContactRecyclerItem> mMyData;
     private View view;
     TextView tvData;
+    private String str;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +71,7 @@ public class TabFragment1 extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(0);
+
         mAdapter = new RecyclerImageTextAdapter(mMyData);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -80,7 +85,6 @@ public class TabFragment1 extends Fragment {
 
         //버튼이 클릭되면 여기 리스너로 옴
         postbtn.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 new JSONTask().execute("http://143.248.38.76:4500/contacts/initialize");//AsyncTask 시작시킴
@@ -103,16 +107,39 @@ public class TabFragment1 extends Fragment {
             }
         });
     }
+    public void hohoho() throws JSONException {
+        JSONArray mArray= new JSONArray();
+        try {
+            mArray = new JSONArray(str);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.d("ERROR", String.valueOf(e));
 
+            Log.d("ERROR", "HOHOHOexception");
+            Log.d("ERROR", str);
+        }
+//        JSONObject obj;
+//        for (int i = 0; i < mArray.length(); i ++){
+//            obj = mArray.getJSONObject(i);
+//        }
+        ArrayList<ContactRecyclerItem> listdata = new ArrayList<ContactRecyclerItem>();
+        for (int i = 0; i < mArray.length(); i++) {
+            ContactRecyclerItem ct = new ContactRecyclerItem();
+            ct.setName(mArray.getJSONObject(i).get("name").toString());
+            ct.setPhone(mArray.getJSONObject(i).get("phonenumber").toString());
+            ct.setIconID(Long.valueOf(mArray.getJSONObject(i).get("iconID").toString()));
+            ct.setPersonID(Long.valueOf(mArray.getJSONObject(i).get("pID").toString()));
+            ct.setImageStr(mArray.getJSONObject(i).get("ImageStr").toString());
+
+            listdata.add(ct);
+        }
+        mMyData = listdata;
+    }
+    //Get
     public class JSONGETTask extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... urls) {
             try {
-
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.accumulate("todoid", 21);
-                jsonObject.accumulate("content", "yun");
-                jsonObject.accumulate("completed", "false");
 
                 HttpURLConnection con = null;
                 BufferedReader reader = null;
@@ -139,6 +166,8 @@ public class TabFragment1 extends Fragment {
                     while ((line = reader.readLine()) != null) {
                         buffer.append(line);
                     }
+
+                    str=buffer.toString();
 
                     //다 가져오면 String 형변환을 수행한다. 이유는 protected String doInBackground(String... urls) 니까
                     return buffer.toString();
@@ -174,10 +203,15 @@ public class TabFragment1 extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             tvData.setText(result);
+            try {
+                hohoho();
+            }catch(JSONException e){
+                Log.e("ERROR", "HOHOHO ERROR");
+            }
         }
-
     }
 
+    //Post
     public class JSONTask extends AsyncTask<String, String, String> {
 
         @Override
@@ -187,6 +221,7 @@ public class TabFragment1 extends Fragment {
 
                 JSONArray jsonArray;// = new JSONArray();
                 JSONObject jsonOb = ArrListToJObj(mMyData, "test");
+                Log.d("ERROR", String.valueOf(jsonOb));
 //                JSONObject jsonObject = new JSONObject();
 //                jsonObject.accumulate("todoid", 14);
 //                jsonObject.accumulate("content", "yun");
@@ -221,6 +256,7 @@ public class TabFragment1 extends Fragment {
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
 //                    writer.write(jsonArray.toString());
                     writer.write(jsonArray.toString());
+                    Log.d("BUFFER", jsonArray.toString());
                     writer.flush();
                     writer.close();//버퍼를 받아줌
 
@@ -265,6 +301,7 @@ public class TabFragment1 extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             tvData.setText(result);//서버로 부터 받은 값을 출력해주는 부분
+//            str = result;
         }
     }
 
@@ -277,12 +314,32 @@ public class TabFragment1 extends Fragment {
             contactItem = mMyData.get(i);
             Drawable drawable;
             Bitmap bm = loadContactPhoto(getActivity().getContentResolver(), contactItem.getPersonID(), contactItem.getIconID());
-            if (bm == null)
+            if (bm == null) {
                 drawable = getResources().getDrawable(R.drawable.default_icon);
-            else {
+                //if bm==null default_icon to bm4
+                bm = DrawableToBitmap(drawable);
+            } else {
                 drawable = new BitmapDrawable(getResources(), bm);
             }
             contactItem.setIcon(drawable);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            String s = new String(byteArray, StandardCharsets.US_ASCII);
+            contactItem.setImageStr(s);
+        }
+    }
+    private Bitmap DrawableToBitmap(Drawable drawable){
+        try {
+            Bitmap bitmap;
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.RGB_565);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+            return bitmap;
+        } catch (OutOfMemoryError e) {
+            // Handle the error
+            return null;
         }
     }
 
@@ -378,7 +435,7 @@ public class TabFragment1 extends Fragment {
                 sObj.put("phonenumber", contactItem.getPhone());
                 sObj.put("iconID", contactItem.getIconID());
                 sObj.put("pID", contactItem.getPersonID());
-//                sObj.put("iconDrawable", contactItem.getIcon());
+
                 jArray.put(sObj);
             }
 
@@ -405,6 +462,7 @@ public class TabFragment1 extends Fragment {
                 sObj.put("phonenumber", contactItem.getPhone());
                 sObj.put("iconID", contactItem.getPhone());
                 sObj.put("pID", contactItem.getPersonID());
+                sObj.put("ImageStr", contactItem.getImageStr());
 //                sObj.put("iconDrawable", contactItem.getIcon());
                 jArray.put(sObj);
             }

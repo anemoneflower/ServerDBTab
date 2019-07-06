@@ -11,8 +11,8 @@ const port = process.env.PORT || 4500;
 // Static File Service
 app.use(express.static('public'));
 // Body-parser
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({limit: '500mb', extended: true }));
+app.use(bodyParser.json({limit: '500mb'}));//, extended: true
 
 // Node.js의 native Promise 사용
 mongoose.Promise = global.Promise;

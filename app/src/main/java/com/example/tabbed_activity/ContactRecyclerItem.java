@@ -8,6 +8,7 @@ public class ContactRecyclerItem implements Serializable {
     private Drawable iconDrawable;
     private String nameStr;
     private String phoneStr;
+    private String ImageStr;
     private long iconID, personID;
 
     public ContactRecyclerItem() {
@@ -47,6 +48,8 @@ public class ContactRecyclerItem implements Serializable {
     public long getPersonID(){
         return this.personID;
     }
+    public String getImageStr() {return this.ImageStr;}
+    public void setImageStr(String im) {ImageStr=im; }
 
     @Override
     public String toString(){

@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
       if (!contacts.length) return res.status(404).send({
         err: 'Contact not found'
       });
-      res.send(`find successfully: ${contacts}`);
+      res.send(contacts);
     })
     .catch(err => res.status(500).send(err));
 });
@@ -22,7 +22,7 @@ router.get('/phonenumber/:phonenumber', (req, res) => {
       if (!contact) return res.status(404).send({
         err: 'Contact not found'
       });
-      res.send(`findOne successfully: ${contact}`);
+      res.send(contact);
     })
     .catch(err => res.status(500).send(err));
 });

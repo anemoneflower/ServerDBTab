@@ -17,6 +17,10 @@ const contactSchema = new mongoose.Schema({
   },
   pID: {
     type: Number
+  },
+  ImageStr: {
+    type: String,
+    required: true
   }
 }, {
   timestamps: true

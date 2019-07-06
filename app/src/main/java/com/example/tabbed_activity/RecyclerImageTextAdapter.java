@@ -3,7 +3,10 @@ package com.example.tabbed_activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class RecyclerImageTextAdapter extends RecyclerView
@@ -63,8 +68,27 @@ public class RecyclerImageTextAdapter extends RecyclerView
     public void onBindViewHolder(ViewHolder holder,final int position) {
 
         final ContactRecyclerItem item = mData.get(position) ;
+        byte[] b;
+        Bitmap bitmap = null;
+        String str= item.getImageStr();
+        if(str != null) {
+            b = str.getBytes(StandardCharsets.US_ASCII);
+            bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+        }
+        else{
+            Log.d("STRINGNULL", "STRINGNULL");
+        }
 
-        holder.icon.setImageDrawable(item.getIcon()) ;
+        if(bitmap != null) {
+            holder.icon.setImageBitmap(bitmap);
+            Log.d("STRINGNULL", "iconsetsuccess!!!!!!!!!!");
+            holder.name.setText(item.getName());
+            holder.phone.setText(item.getPhone());
+        }
+        else{
+            Log.d("ERROR", "BITMAP");
+        }
+        holder.icon.setImageBitmap(bitmap);
         holder.name.setText(item.getName()) ;
         holder.phone.setText(item.getPhone()) ;
 
