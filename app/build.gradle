@@ -39,4 +39,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.mongodb/bson
     implementation group: 'org.mongodb', name: 'bson', version: '3.5.0'
 
+    implementation 'com.facebook.android:facebook-android-sdk:4.+'
+
 }
