@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.tabbed_activity.R;
+import com.example.tabbed_activity.TabFragment1;
+import com.example.tabbed_activity.TabFragment2;
 import com.example.tabbed_activity.TabFragment3;
 import com.example.tabbed_activity.TabFragment4;
 
@@ -33,7 +35,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         // getItem is called to instantiate the fragment for the given page.
         switch (position) {
             case 0:
-                TabFragment4 tab1 = new TabFragment4();
+                TabFragment1 tab1 = new TabFragment1();
                 return tab1;
             case 1:
                 TabFragment3 tab2 = new TabFragment3();

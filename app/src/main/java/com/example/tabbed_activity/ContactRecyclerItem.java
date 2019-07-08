@@ -10,7 +10,6 @@ public class ContactRecyclerItem implements Serializable {
     private String phoneStr = null;
     private String ImageStr = null;
     private long iconID, personID;
-    private String ImageStr;
 
     public ContactRecyclerItem() {
     }
@@ -30,12 +29,11 @@ public class ContactRecyclerItem implements Serializable {
     public void setPhone(String desc) {
         phoneStr = desc;
     }
-    public void setImageStr(String im) {ImageStr=im; }
 
     public Drawable getIcon() {
         return this.iconDrawable;
     }
-    public String getImageStr() {return this.ImageStr;}
+
     public String getName() {
         return this.nameStr;
     }

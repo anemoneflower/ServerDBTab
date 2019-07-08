@@ -52,7 +52,7 @@ public class SplashActivity extends Activity {
     }
 
     private void initial_set(){
-        startActivity(new Intent(this, LoginActivity.class));//new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
