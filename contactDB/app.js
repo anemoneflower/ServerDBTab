@@ -24,6 +24,6 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
   .catch(e => console.error(e));
 
   // ROUTERS
-app.use('/contacts', require('./routes/contacts'));
+app.use('/gallerys', require('./routes/gallerys'));
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));

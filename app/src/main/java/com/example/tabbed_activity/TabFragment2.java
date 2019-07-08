@@ -80,12 +80,12 @@ public class TabFragment2 extends Fragment {
         btnAlbum = view.findViewById(R.id.btn_album);
         btnReset = view.findViewById(R.id.btn_reset);
 
-        btnCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                takePhoto();
-            }
-        });
+//        btnCamera.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                takePhoto();
+//            }
+//        });
         btnAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,31 +206,31 @@ public class TabFragment2 extends Fragment {
         startActivityForResult(intent, PICK_FROM_ALBUM);
     }
 
-    //사진을 찍을때 - content와 file 경로의 차이를 확실히 파악
-    private void takePhoto() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                File photoFile = null;
-                try {
-                    photoFile = createImageFile();
-                } catch (IOException e) {
-                    Toast.makeText(getContext(), "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-                if (photoFile != null) {
-                    Uri providerURI = FileProvider.getUriForFile(getContext(), "com.example.tabbed_activity.provider", photoFile);
-                    //인텐트에 전달할때는 content로 구성된 uri를 보내야한다
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI);
-                    startActivityForResult(intent, PICK_FROM_CAMERA);
-                }
-            }
-        } else {
-            Toast.makeText(getContext(), "공간 접근 불가.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-    }
+//    //사진을 찍을때 - content와 file 경로의 차이를 확실히 파악
+//    private void takePhoto() {
+//        String state = Environment.getExternalStorageState();
+//        if (Environment.MEDIA_MOUNTED.equals(state)) {
+//            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+//                File photoFile = null;
+//                try {
+//                    photoFile = createImageFile();
+//                } catch (IOException e) {
+//                    Toast.makeText(getContext(), "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+//                    e.printStackTrace();
+//                }
+//                if (photoFile != null) {
+//                    Uri providerURI = FileProvider.getUriForFile(getContext(), "com.example.tabbed_activity.provider", photoFile);
+//                    //인텐트에 전달할때는 content로 구성된 uri를 보내야한다
+//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI);
+//                    startActivityForResult(intent, PICK_FROM_CAMERA);
+//                }
+//            }
+//        } else {
+//            Toast.makeText(getContext(), "공간 접근 불가.", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//    }
 
     //새로운 파일 이름 만들기
     private File createImageFile() throws IOException {

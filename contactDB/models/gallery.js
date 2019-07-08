@@ -2,23 +2,7 @@ const mongoose = require('mongoose');
 
 // Define Schemes
 const contactSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  phonenumber: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  iconID: {
-    type: Number,
-    default: false
-  },
-  pID: {
-    type: Number
-  },
-  ImageStr: {
+  imagestr2: {
     type: String,
     required: true
   }

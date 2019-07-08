@@ -87,14 +87,14 @@ public class TabFragment1 extends Fragment {
         postbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new JSONTask().execute("http://143.248.38.76:4500/contacts/initialize");//AsyncTask 시작시킴
+                new JSONTask().execute("http://143.248.38.253:4500/simsims/initialize");//AsyncTask 시작시킴
             }
         });
 
         getbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new JSONGETTask().execute("http://143.248.38.76:4500/contacts");
+                new JSONGETTask().execute("http://143.248.38.253:4500/simsims");
             }
         });
 
@@ -199,17 +199,17 @@ public class TabFragment1 extends Fragment {
         }
 
         //doInBackground메소드가 끝나면 여기로 와서 텍스트뷰의 값을 바꿔준다.
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            tvData.setText(result);
-            try {
-                hohoho();
-            }catch(JSONException e){
-                Log.e("ERROR", "HOHOHO ERROR");
-            }
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+        tvData.setText(result);
+        try {
+            hohoho();
+        }catch(JSONException e){
+            Log.e("ERROR", "HOHOHO ERROR");
         }
     }
+}
 
     //Post
     public class JSONTask extends AsyncTask<String, String, String> {
@@ -300,7 +300,15 @@ public class TabFragment1 extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            tvData.setText(result);//서버로 부터 받은 값을 출력해주는 부분
+            tvData.setText(result);
+            ////Gson gson = new Gson();
+////            SimsimiModel response = gson.fromJson(s,SimsimiModel.class);
+////
+////            ChatModel chatModel = new ChatModel(response.getResponse(),false); // get response from simsimi
+////            models.add(chatModel);
+////            CustomAdapter adapter = new CustomAdapter(models,getApplicationContext());
+////            listView.setAdapter(adapter);
+            //서버로 부터 받은 값을 출력해주는 부분
 //            str = result;
         }
     }
