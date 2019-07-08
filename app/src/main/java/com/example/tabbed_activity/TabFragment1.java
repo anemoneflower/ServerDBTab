@@ -2,6 +2,7 @@ package com.example.tabbed_activity;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -18,20 +19,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.facebook.login.LoginManager;
 import com.futuremind.recyclerviewfastscroll.FastScroller;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,8 +47,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -63,33 +60,56 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
     private ArrayList<ContactRecyclerItem> mMyData = new ArrayList<>();
     private View view;
     private Boolean isFABOpen = Boolean.FALSE;
-    private FloatingActionButton refreshFab, addContactFab, postFab, getFab, resetFab;
+    private FloatingActionButton refreshFab, addContactFab, postFab, getFab, resetFab, logoutFab;
+
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    private String userid;
+//    private String user = Profile().getCurrentProfile().getID();
 //    SharedPreferences pref;
 //    SharedPreferences.Editor editor;
 
 //    SwipeRefreshLayout swipeLayout;
+    private String ip = "143.248.38.76";
+//    private String ip = "13.125.11.163";
     private void GetContactFromDB() throws ExecutionException, InterruptedException {
-        new JSONGETTask().execute("http://143.248.38.76:4500/contacts").get();
+        new JSONGETTask().execute("http://"+ip+":4500/contacts").get();
     }
     private void PostContactToDB() throws ExecutionException, InterruptedException {
-        new JSONTask().execute("http://143.248.38.76:4500/contacts/initialize").get();
+//        new JSONTask().execute("http://143.248.38.76:4500/contacts/initialize").get();
+        new JSONTask().execute("http://"+ip+":4500/contacts/initialize").get();
     }
     private void ResetConatctAtDB() throws ExecutionException, InterruptedException {
-        new JSONResetTask().execute("http://143.248.38.76:4500/contacts/reset").get();
+//        new JSONResetTask().execute("http://143.248.38.76:4500/contacts/reset").get();
+        new JSONResetTask().execute("http://"+ip+":4500/contacts/reset").get();
     }
     private void DeleteContactAtDB(String phonenum) throws ExecutionException, InterruptedException{
-        new JSONDeleteTask().execute("http://143.248.38.76:4500/contacts/phonenumber/"+phonenum).get();
+//        new JSONDeleteTask().execute("http://143.248.38.76:4500/contacts/phonenumber/"+phonenum).get();
+        new JSONDeleteTask().execute("http://"+ip+":4500/contacts/phonenumber/"+phonenum).get();
     }
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        pref = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        editor = pref.edit();
+
+        userid = pref.getString("userid",null);
+        Toast.makeText(getContext(), "USERID: " + userid, Toast.LENGTH_LONG).show();
         //Shared preferences
 //        pref = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
 //        editor = pref.edit();
 
-        new JSONGETTask().execute("http://143.248.38.76:4500/contacts");
+//        new JSONGETTask().execute("http://143.248.38.76:4500/contacts");
+        try {
+            GetContactFromDB();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -206,6 +226,7 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
         postFab = view.findViewById(R.id.fab_post);
         getFab = view.findViewById(R.id.fab_get);
         resetFab = view.findViewById(R.id.fab_reset);
+        logoutFab = view.findViewById(R.id.fab_logout);
         fab_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { //연락처 추가 버튼
@@ -308,13 +329,41 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
                 }
             }
         });
+        logoutFab.animate().translationY(-getResources().getDimension(R.dimen.standard_305));
+        logoutFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                show();
+            }
+        });
 //        fab2.animate().
 //        fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
     }
-
+    void show()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("FACEBOOK");
+        builder.setMessage("Do you want to logout?");
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getContext(),"Logout",Toast.LENGTH_LONG).show();
+                        LoginManager.getInstance().logOut();
+                        startActivity(new Intent(getContext(), LoginActivity.class));
+                        getActivity().finish();
+                    }
+                });
+        builder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getContext(),"Cancled",Toast.LENGTH_LONG).show();
+                    }
+                });
+        builder.show();
+    }
     private void refresh(){
         Log.d("ERRORCHECKING" ,"REFRESH");
-        new JSONTask().execute("http://143.248.38.76:4500/contacts/initialize");//AsyncTask 시작시킴
+        new JSONTask().execute("http://"+ip+":4500/contacts/initialize");//AsyncTask 시작시킴
 //        new JSONGETTask().execute("http://143.248.38.76:4500/contacts");
     }
 

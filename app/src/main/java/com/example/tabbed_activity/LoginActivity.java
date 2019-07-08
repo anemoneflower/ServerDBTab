@@ -2,11 +2,13 @@ package com.example.tabbed_activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -26,9 +28,25 @@ public class LoginActivity extends AppCompatActivity {
     private LoginCallback mLoginCallback;
     private CallbackManager mCallbackManager;
 
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Shared preferences
+        pref = getSharedPreferences("pref", MODE_PRIVATE);
+        editor = pref.edit();
+
+        boolean loggedIn = AccessToken.getCurrentAccessToken() != null;
+
+        //check if already logged in
+        if(loggedIn) {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        }
+
         setContentView(R.layout.activity_login);
 
         mContext = getApplicationContext();
@@ -41,10 +59,15 @@ public class LoginActivity extends AppCompatActivity {
         btn_facebook_login.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                final String username = loginResult.getAccessToken().getUserId();
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         Log.v("result", object.toString());
+
+
+                        editor.putString("userid", username);
+                        editor.apply();
 
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         finish();

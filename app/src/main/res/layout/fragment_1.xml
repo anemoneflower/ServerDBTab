@@ -131,6 +131,21 @@
         app:layout_constraintTop_toTopOf="@+id/fab_menu"
         app:srcCompat="@drawable/remove" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="#DEFFC13F"
+        app:fabSize="mini"
+        app:layout_anchorGravity="end|bottom"
+        app:layout_constraintBottom_toBottomOf="@+id/fab_menu"
+        app:layout_constraintEnd_toEndOf="@+id/fab_menu"
+        app:layout_constraintStart_toStartOf="@+id/fab_menu"
+        app:layout_constraintTop_toTopOf="@+id/fab_menu"
+        app:srcCompat="@drawable/remove" />
+
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
