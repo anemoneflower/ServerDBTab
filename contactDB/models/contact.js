@@ -2,14 +2,17 @@ const mongoose = require('mongoose');
 
 // Define Schemes
 const contactSchema = new mongoose.Schema({
+  userID: {
+    type: String,
+    required: true
+  },
   name: {
     type: String,
     required: true
   },
   phonenumber: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   iconID: {
     type: Number,
@@ -35,16 +38,19 @@ contactSchema.statics.create = function(payload) {
   return contact.save();
 };
 // Find All
-contactSchema.statics.findAll = function() {
+contactSchema.statics.findAll = function(userID) {
   // return promise
   // V4부터 exec() 필요없음
-  return this.find({});
+  return this.find({userID});
 };
 // Find One by contactid
-contactSchema.statics.findOneByPhonenumber = function(phonenumber) {
-  return this.findOne({
-    phonenumber
-  });
+contactSchema.statics.findOneByPhonenumber = function(phonenumber, userID) {
+  // return this.findOne({
+  //   phonenumber
+  // });
+  console.log(phonenumber);
+  console.log(userID);
+  return this.find({userID}).findOne({phonenumber});
 };
 // Update by contactid
 contactSchema.statics.updateByPhonenumber = function(phonenumber, payload) {
@@ -56,10 +62,19 @@ contactSchema.statics.updateByPhonenumber = function(phonenumber, payload) {
   });
 };
 // Delete by contactid
-contactSchema.statics.deleteByPhonenumber = function(phonenumber) {
+contactSchema.statics.deleteByPhonenumber = function(phonenumber, userID) {
+  // return this.remove({
+  //   phonenumber
+  // });
+
+  return this.find({userID}).remove({phonenumber});
+};
+
+contactSchema.statics.deleteByOnlyPhonenumber = function(phonenumber) {
   return this.remove({
     phonenumber
   });
+
 };
 
 // contactSchema.statics.resetAll = function() {

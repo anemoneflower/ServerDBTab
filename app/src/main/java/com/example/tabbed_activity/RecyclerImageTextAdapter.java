@@ -149,8 +149,8 @@ public class RecyclerImageTextAdapter extends RecyclerView
 //                Intent intent = new Intent(Intent.ACTION_DIAL);
 //                intent.setData(Uri.parse(tel));
 //                v.getContext().startActivity(intent);
-                Toast.makeText(v.getContext(),
-                        "Click!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(v.getContext(),
+//                        "Click!", Toast.LENGTH_SHORT).show();
 
                 Button bb = holder.mView.findViewById(R.id.delete_btn);
                 if(bb.getVisibility() == View.GONE) {

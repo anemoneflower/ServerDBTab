@@ -2,9 +2,9 @@ const router = require('express').Router();
 const Contact = require('../models/contact');
 
 // Find All
-router.get('/', (req, res) => {
+router.get('/userID/:userID', (req, res) => {
   console.log('who get in here : get');
-  Contact.findAll()
+  Contact.findAll(req.params.userID)
     .then((contacts) => {
       if (!contacts.length) return res.status(404).send({
         err: 'Contact not found'
@@ -15,13 +15,14 @@ router.get('/', (req, res) => {
 });
 
 // Find One by contactid
-router.get('/phonenumber/:phonenumber', (req, res) => {
+router.get('/phonenumber/:phonenumber/userID/:userID', (req, res) => {
   console.log('who get in here/phonenumber/:phonenumber');
-  Contact.findOneByPhonenumber(req.params.phonenumber)
+  Contact.findOneByPhonenumber(req.params.phonenumber, req.params.userID)
     .then((contact) => {
       if (!contact) return res.status(404).send({
         err: 'Contact not found'
       });
+      console.log(req.params.phonenumber + "  "+ req.params.userID);
       res.send(contact);
     })
     .catch(err => res.status(500).send(err));
@@ -60,22 +61,22 @@ router.put('/phonenumber/:phonenumber', (req, res) => {
 });
 
 // Delete by phonenumber
-router.delete('/phonenumber/:phonenumber', (req, res) => {
+router.delete('/phonenumber/:phonenumber/userID/:userID', (req, res) => {
   console.log('who get in here : delete');
-  Contact.deleteByPhonenumber(req.params.phonenumber)
+  Contact.deleteByPhonenumber(req.params.phonenumber, req.params.userID)
     .then(() => res.sendStatus(200))
     .catch(err => res.status(500).send(err));
 });
 
-router.delete('/reset', (req, res) => {
+router.delete('/reset/userID/:userID', (req, res) => {
   console.log('who get in here : reset');
-  Contact.findAll()
+  Contact.findAll(req.params.userID)
     .then((contacts) => {
       console.log('findall.....');
       var phonenums = contacts.filter(function(item){return item.phonenumber != null;});
       console.log('phonenums succedd!!!');
       phonenums.forEach(function(element){
-        Contact.deleteByPhonenumber(element.phonenumber)
+        Contact.deleteByOnlyPhonenumber(element.phonenumber)
           .then(()=>res.sendStatus(200))
           .catch(err=>res.status(500).send(err));
       });

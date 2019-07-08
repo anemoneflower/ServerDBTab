@@ -43,7 +43,11 @@ public class LoginActivity extends AppCompatActivity {
 
         //check if already logged in
         if(loggedIn) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            String userid = pref.getString("userid", null);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("USERID", userid);
+            Log.d("USERID", "LOGIN "+userid);
+            startActivity(intent);
             finish();
         }
 
@@ -59,17 +63,20 @@ public class LoginActivity extends AppCompatActivity {
         btn_facebook_login.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                final String username = loginResult.getAccessToken().getUserId();
+                final String userid = loginResult.getAccessToken().getUserId();
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         Log.v("result", object.toString());
 
 
-                        editor.putString("userid", username);
+                        editor.putString("userid", userid);
                         editor.apply();
 
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("USERID", userid);
+                        startActivity(intent);
+
                         finish();
                     }
                 });

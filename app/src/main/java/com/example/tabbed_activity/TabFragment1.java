@@ -50,8 +50,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import static android.content.Context.MODE_PRIVATE;
-
 
 public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView mRecyclerView;
@@ -73,7 +71,7 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
     private String ip = "143.248.38.76";
 //    private String ip = "13.125.11.163";
     private void GetContactFromDB() throws ExecutionException, InterruptedException {
-        new JSONGETTask().execute("http://"+ip+":4500/contacts").get();
+        new JSONGETTask().execute("http://"+ip+":4500/contacts/userID/"+userid).get();
     }
     private void PostContactToDB() throws ExecutionException, InterruptedException {
 //        new JSONTask().execute("http://143.248.38.76:4500/contacts/initialize").get();
@@ -81,11 +79,11 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
     }
     private void ResetConatctAtDB() throws ExecutionException, InterruptedException {
 //        new JSONResetTask().execute("http://143.248.38.76:4500/contacts/reset").get();
-        new JSONResetTask().execute("http://"+ip+":4500/contacts/reset").get();
+        new JSONResetTask().execute("http://"+ip+":4500/contacts/reset/userID/"+userid).get();
     }
     private void DeleteContactAtDB(String phonenum) throws ExecutionException, InterruptedException{
 //        new JSONDeleteTask().execute("http://143.248.38.76:4500/contacts/phonenumber/"+phonenum).get();
-        new JSONDeleteTask().execute("http://"+ip+":4500/contacts/phonenumber/"+phonenum).get();
+        new JSONDeleteTask().execute("http://"+ip+":4500/contacts/phonenumber/"+phonenum +"/userID/"+userid).get();
     }
 
 
@@ -93,11 +91,16 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        pref = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
-        editor = pref.edit();
+//        pref = getContext().getSharedPreferences("pref", MODE_PRIVATE);
+//        editor = pref.edit();
 
-        userid = pref.getString("userid",null);
+        userid = getActivity().getIntent().getStringExtra("USERID");
+
+//        editor.putString("userid", userid);
+//        editor.apply();
+//        userid = pref.getString("userid",null);
         Toast.makeText(getContext(), "USERID: " + userid, Toast.LENGTH_LONG).show();
+//        Log.d("USERID", userid);
         //Shared preferences
 //        pref = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
 //        editor = pref.edit();
@@ -375,6 +378,7 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
         postFab.animate().translationY(0);
         getFab.animate().translationY(0);
         resetFab.animate().translationY(0);
+        logoutFab.animate().translationY(0);
 //        fab3.animate().translationY(0);
     }
 
@@ -504,7 +508,7 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
                 //JSONObject를 만들고 key value 형식으로 값을 저장해준다.
 
                 JSONArray jsonArray;// = new JSONArray();
-                JSONObject jsonOb = ArrListToJObj(initDataset(), "test");
+                JSONObject jsonOb = ArrListToJObj(initDataset(), userid);
                 Log.d("CHECK", String.valueOf(jsonOb));
 //                JSONObject jsonObject = new JSONObject();
 //                jsonObject.accumulate("todoid", 14);
@@ -512,7 +516,11 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
 //                jsonObject.accumulate("completed", "false");
 //                for (int i=0; i<jsonOb.length(); i++){
 //                    JSONArray
+
+
                 jsonArray = (JSONArray) jsonOb.get("ContactData");
+
+
 //                    jsonArray.put(ho);
 //                }
                 Log.d("CONTACT", jsonArray.toString());
@@ -758,38 +766,6 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
                 contactItem.setImageStr(str);
             }
 
-//            Drawable temp = contactItem.getIcon();
-//            if(temp == null){
-//                contactItem.setImageStr(null);
-//            } else {
-//                Bitmap bitmap = ((BitmapDrawable) temp).getBitmap();
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                byte[] bitmapdata = stream.toByteArray();
-//                String str = org.bson.internal.Base64.encode(bitmapdata);
-//                contactItem.setImageStr(str);
-//            }
-
-//            Drawable drawable;
-//            Bitmap bm = loadContactPhoto(getActivity().getContentResolver(), contactItem.getPersonID(), contactItem.getIconID());
-//            if (bm == null) {
-//                drawable = getContext().getDrawable(R.drawable.default_icon);
-//                //if bm==null default_icon to bm4
-//                bm = DrawableToBitmap(drawable);
-//            } else {
-//                drawable = new BitmapDrawable(getResources(), bm);
-//            }
-//            contactItem.setIcon(drawable);
-//            if(bm == null){
-//                contactItem.setImageStr(null);
-//            }
-//            else {
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                bm.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                byte[] byteArray = stream.toByteArray();
-//                String str = org.bson.internal.Base64.encode(byteArray);
-//                contactItem.setImageStr(str);
-//            }
         }
         return mmMyData;
     }
@@ -886,7 +862,7 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
     }
 
     //ArrayList type을 JSONObject type으로 변환하는 함수.
-    public JSONObject ArrListToJObj(ArrayList<ContactRecyclerItem> arrList, String name) {
+    public JSONObject ArrListToJObj(ArrayList<ContactRecyclerItem> arrList, String id) {
         JSONObject obj = new JSONObject();
         try {
             JSONArray jArray = new JSONArray();
@@ -896,6 +872,7 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
                 contactItem = arrList.get(i);
 
                 JSONObject sObj = new JSONObject();
+                sObj.put("userID", id);
                 sObj.put("name", contactItem.getName());
                 sObj.put("phonenumber", contactItem.getPhone());
                 sObj.put("iconID", contactItem.getIconID());
@@ -904,7 +881,7 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
                 sObj.put("iconDrawable", contactItem.getIcon());
                 jArray.put(sObj);
             }
-            obj.put("filename", name);
+            obj.put("filename", id);
             obj.put("ContactData", jArray);
 
             System.out.println(obj.toString());
