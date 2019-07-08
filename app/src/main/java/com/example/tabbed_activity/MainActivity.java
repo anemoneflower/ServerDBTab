@@ -1,6 +1,6 @@
 package com.example.tabbed_activity;
 
-import android.os.AsyncTask;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,12 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tabbed_activity.ui.main.SectionsPagerAdapter;
 
+
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initial_set();
+//        getHashKey();
     }
 
     protected void initial_set() {

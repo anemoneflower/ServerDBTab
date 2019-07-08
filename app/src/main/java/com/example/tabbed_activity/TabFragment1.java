@@ -454,6 +454,19 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
             try {
                 //JSONObject를 만들고 key value 형식으로 값을 저장해준다.
 
+
+                ContactRecyclerItem contactItem;
+                for (int i = 0; i < mMyData.size(); i++) {
+                    contactItem = mMyData.get(i);
+                    Bitmap bm = loadContactPhoto(getActivity().getContentResolver(), contactItem.getPersonID(), contactItem.getIconID());
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
+                    bm.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
+                    byte[] byteArray = stream.toByteArray() ;
+                    String s = new String(byteArray, StandardCharsets.US_ASCII);
+                    contactItem.setImageStr(s);
+                    }
+
+
                 JSONArray jsonArray;// = new JSONArray();
                 JSONObject jsonOb = ArrListToJObj(initDataset(), "test");
                 Log.d("CHECK", String.valueOf(jsonOb));
