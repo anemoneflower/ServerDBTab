@@ -2,9 +2,16 @@ package com.example.tabbed_activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.google.android.material.tabs.TabLayout;
+
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.tabbed_activity.ui.main.SectionsPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initial_set();
     }
-    protected void initial_set(){
+
+    protected void initial_set() {
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -23,11 +31,24 @@ public class MainActivity extends AppCompatActivity {
         tabs.setupWithViewPager(viewPager);
     }
 
-//    AsyncTask.execute(new Runnable() {
-//        @Override
-//        public void run() {
-//            // All your networking logic
-//            // should be here
-//        }
-//    });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mainmenu,menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.menu1:
+                Toast.makeText(this, "첫번째", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu2:
+                Toast.makeText(this, "두번째", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }

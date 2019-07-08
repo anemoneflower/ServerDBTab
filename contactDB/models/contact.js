@@ -13,14 +13,15 @@ const contactSchema = new mongoose.Schema({
   },
   iconID: {
     type: Number,
-    default: false
+    default: null
   },
   pID: {
-    type: Number
+    type: Number,
+    default: null
   },
   ImageStr: {
     type: String,
-    required: true
+    default: null
   }
 }, {
   timestamps: true

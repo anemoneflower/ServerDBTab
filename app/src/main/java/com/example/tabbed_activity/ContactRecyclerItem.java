@@ -5,10 +5,10 @@ import android.graphics.drawable.Drawable;
 import java.io.Serializable;
 
 public class ContactRecyclerItem implements Serializable {
-    private Drawable iconDrawable;
-    private String nameStr;
-    private String phoneStr;
-    private String ImageStr;
+    private Drawable iconDrawable = null;
+    private String nameStr = null;
+    private String phoneStr = null;
+    private String ImageStr = null;
     private long iconID, personID;
 
     public ContactRecyclerItem() {

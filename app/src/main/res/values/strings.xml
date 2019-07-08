@@ -9,4 +9,5 @@
     <string name="getbtn">GetBtn</string>
     <string name="postbtn">PostBtn</string>
     <string name="facebook_app_key">479792619451357</string>
+    <string name="resetbtn">resetbtn</string>
 </resources>
