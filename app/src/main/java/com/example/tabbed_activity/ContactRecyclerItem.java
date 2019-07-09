@@ -5,9 +5,10 @@ import android.graphics.drawable.Drawable;
 import java.io.Serializable;
 
 public class ContactRecyclerItem implements Serializable {
-    private Drawable iconDrawable;
-    private String nameStr;
-    private String phoneStr;
+    private Drawable iconDrawable = null;
+    private String nameStr = null;
+    private String phoneStr = null;
+    private String ImageStr = null;
     private long iconID, personID;
 
     public ContactRecyclerItem() {
@@ -47,6 +48,8 @@ public class ContactRecyclerItem implements Serializable {
     public long getPersonID(){
         return this.personID;
     }
+    public String getImageStr() {return this.ImageStr;}
+    public void setImageStr(String im) {ImageStr=im; }
 
     @Override
     public String toString(){

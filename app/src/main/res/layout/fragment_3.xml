@@ -2,97 +2,53 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout_3"
+    android:id="@+id/fragment_3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="13dp"
-    tools:context="TabFragment3">
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/ScrollView1"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <!--tools:context="com.example.tabbed_activity.MainActivity"-->
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        android:src="@drawable/ic_send"
+        android:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/user_message"
+        app:layout_constraintEnd_toEndOf="@+id/user_message" />
+
+    <ListView
+        android:id="@+id/list_of_message"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <Spinner
-                android:id="@+id/spinner0"
-                style="@style/SpinnerStyle"
-                tools:ignore="MissingConstraints"></Spinner>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/fab"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="-16dp"></ListView>
 
-            <Spinner
-                android:id="@+id/spinner1"
-                style="@style/SpinnerStyle"
-                tools:ignore="MissingConstraints"
-                app:layout_constraintTop_toBottomOf="@id/spinner0"></Spinner>
-
-            <Spinner
-                android:id="@+id/spinner2"
-                style="@style/SpinnerStyle"
-                tools:ignore="MissingConstraints"
-                app:layout_constraintTop_toBottomOf="@id/spinner1"></Spinner>
-
-            <Spinner
-                android:id="@+id/spinner3"
-                style="@style/SpinnerStyle"
-                tools:ignore="MissingConstraints"
-                app:layout_constraintTop_toBottomOf="@id/spinner2"></Spinner>
-
-            <Spinner
-                android:id="@+id/spinner4"
-                style="@style/SpinnerStyle"
-                tools:ignore="MissingConstraints"
-                app:layout_constraintTop_toBottomOf="@id/spinner3"></Spinner>
-
-            <Spinner
-                android:id="@+id/spinner5"
-                style="@style/SpinnerStyle"
-                tools:ignore="MissingConstraints"
-                app:layout_constraintTop_toBottomOf="@id/spinner4"></Spinner>
-
-            <Spinner
-                android:id="@+id/spinner6"
-                style="@style/SpinnerStyle"
-                tools:ignore="MissingConstraints"
-                app:layout_constraintTop_toBottomOf="@id/spinner5"></Spinner>
-
-            <Spinner
-                android:id="@+id/spinner7"
-                style="@style/SpinnerStyle"
-                tools:ignore="MissingConstraints"
-                app:layout_constraintTop_toBottomOf="@id/spinner6"></Spinner>
-
-            <Spinner
-                android:id="@+id/spinner8"
-                style="@style/SpinnerStyle"
-                tools:ignore="MissingConstraints"
-                app:layout_constraintTop_toBottomOf="@id/spinner7"></Spinner>
-        </LinearLayout>
-    </ScrollView>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/overlay_on_button"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/user_message"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/constraintLayout_3"
-        app:layout_constraintEnd_toEndOf="@id/constraintLayout_3"
-        app:srcCompat="@drawable/done" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/overlay_on_button_custom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/constraintLayout_3"
-        app:layout_constraintStart_toStartOf="@id/constraintLayout_3"
-        app:srcCompat = "@drawable/setting" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/fab"
+        android:hint="Enter your message"
+        app:layout_constraintBottom_toBottomOf="@+id/list_of_message"
+        tools:layout_editor_absoluteX="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

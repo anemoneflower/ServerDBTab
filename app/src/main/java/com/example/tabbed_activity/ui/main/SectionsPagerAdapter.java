@@ -12,7 +12,6 @@ import com.example.tabbed_activity.R;
 import com.example.tabbed_activity.TabFragment1;
 import com.example.tabbed_activity.TabFragment2;
 import com.example.tabbed_activity.TabFragment3;
-import com.example.tabbed_activity.TabFragment4;
 
 
 /**
@@ -22,7 +21,7 @@ import com.example.tabbed_activity.TabFragment4;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2, R.string.tab_text_3, R.string.tab_text_4};
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2, R.string.tab_text_3};
     private final Context mContext;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
@@ -38,14 +37,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 TabFragment1 tab1 = new TabFragment1();
                 return tab1;
             case 1:
-                TabFragment3 tab2 = new TabFragment3();
+                TabFragment2 tab2 = new TabFragment2();
                 return tab2;
             case 2:
                 TabFragment3 tab3 = new TabFragment3();
                 return tab3;
-            case 3:
-                TabFragment4 tab4 = new TabFragment4();
-                return tab4;
             default:
                 return null;
         }
@@ -61,6 +57,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        return 4;
+        return 3;
     }
 }
