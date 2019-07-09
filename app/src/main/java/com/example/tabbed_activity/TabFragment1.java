@@ -68,8 +68,8 @@ public class TabFragment1 extends Fragment{//} implements SwipeRefreshLayout.OnR
 //    SharedPreferences.Editor editor;
 
 //    SwipeRefreshLayout swipeLayout;
-    private String ip = "143.248.38.76";
-//    private String ip = "13.125.11.163";
+//    private String ip = "143.248.38.76";
+    private String ip = "13.125.11.163";
     private void GetContactFromDB() throws ExecutionException, InterruptedException {
         new JSONGETTask().execute("http://"+ip+":4500/contacts/userID/"+userid).get();
     }
